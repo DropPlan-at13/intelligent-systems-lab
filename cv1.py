@@ -2,10 +2,15 @@ import cv2
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env/.env if present, else default search
-ENV_FILE = os.path.join(os.path.dirname(__file__), ".env", ".env")
-if os.path.isfile(ENV_FILE):
-    load_dotenv(ENV_FILE)
+# Load environment variables.
+# Prefer project-level .env; fall back to historical .env/.env (venv-local) for compatibility.
+ROOT_ENV = os.path.join(os.path.dirname(__file__), ".env")
+LEGACY_ENV = os.path.join(os.path.dirname(__file__), ".env", ".env")
+
+if os.path.isfile(ROOT_ENV):
+    load_dotenv(ROOT_ENV)
+elif os.path.isfile(LEGACY_ENV):
+    load_dotenv(LEGACY_ENV)
 else:
     load_dotenv()
 
